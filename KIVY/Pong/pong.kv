@@ -1,0 +1,15 @@
+
+<EnhancedLabel>
+    color:(1,1,0)
+    font_size:dp(20)
+    canvas.before:
+        Color:
+            rgb: 1,.2,.2
+        Rectangle:
+            size: self.size
+            pos: self.pos
+        Color:
+            rgb: 1,1,1
+        Line:
+            width: 1.5
+            rectangle: self.x, self.y, self.width, self.height

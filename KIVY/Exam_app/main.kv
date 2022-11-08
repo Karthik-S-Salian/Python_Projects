@@ -1,0 +1,377 @@
+#: import NoTransition kivy.uix.screenmanager.NoTransition
+#: import Clock kivy.properties.Clock
+#: import Factory kivy.factory.Factory
+
+
+WindowManager
+
+
+<WindowManager@ScreenManager>
+    transition:NoTransition()
+
+    MenuScreen
+    QuestionSetSelectionScreen
+    StartExamScreen
+    QuestionsScreen
+    SubmitVerificationScreen
+    ResultScreen
+    SettingsScreen
+
+
+<BorderedLabel>
+    color:(0,0,0)
+    font_size:dp(18)
+    canvas:
+        Color:
+            rgba: 0,0,0, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+
+<BorderedButton>
+    canvas:
+        Color:
+            rgba: 0,0,0, 1
+        Line:
+            width: 1.2
+            rectangle: self.x, self.y, self.width, self.height
+
+
+<NumberLabel>
+    size_hint:(1, .15)
+    canvas.before:
+        Color:
+            rgb: 0,0,0
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+        Color:
+            rgb: 15/255,120/255,247/255
+        Rectangle:
+            size: self.size
+            pos:self.pos
+
+<QuestionSetButton>
+    size_hint   :(1, .15)
+    color:(0,0,0)
+    background_normal:""
+    font_size:dp(18)
+    background_color:1,1,1,0.5
+    canvas:
+        Color:
+            rgb: 15/255,160/255,247/255
+        Line:
+            width: 1.2
+            rectangle: self.x, self.y, self.width, self.height
+
+<OptionButton@Button>
+    background_normal:""
+    background_down:""
+    color:(0,0,0,1)
+    font_size:17
+    text_size:self.size
+    halign:"left"
+    valign:"middle"
+    max_line:3
+    padding:dp(10),dp(5)
+    text:""
+
+<OptionCheckbox@CheckBox>
+    canvas.before:
+        Rectangle:
+            source: 'checkbox_bg.png'
+            size: sp(22), sp(22)
+            pos: int(self.center_x - sp(11)), int(self.center_y - sp(11))
+    size_hint_x:None
+    width:dp(50)
+    group:"option"
+
+
+<MenuScreen>
+    name:"menu"
+
+<QuestionSetSelectionScreen>
+    name:"selection"
+    canvas.before:
+        Rectangle:
+            source: self.bg_image
+            size: self.size
+            pos: self.pos
+        Color:
+            rgba: 0,0,0,0.3
+        Rectangle:
+            size: self.size
+
+
+
+
+<StartExamScreen@Screen>
+    name:"startexam"
+    RelativeLayout:
+        Label:
+            text: "Number of Questions : 40"
+            color:(0,0,0,1)
+            size_hint:.35,.1
+            pos_hint:{"center_x":.5,"center_y":.8}
+            background_color:1,.9,.4
+        Label:
+            text: "Duration : 45 min"
+            color:(0,0,0,1)
+            size_hint:.35,.1
+            pos_hint:{"center_x":.5,"center_y":.65}
+            background_color:1,.9,.4
+        Label:
+            color:(0,0,0,1)
+            text: "Marks : 40"
+            size_hint:.35,.1
+            pos_hint:{"center_x":.5,"center_y":.5}
+            background_color:1,.9,.4
+        Button:
+            text: "Start"
+            size_hint:.35,.1
+            pos_hint:{"center_x":.5,"center_y":.35}
+            background_color:230/255,0,92/255
+            on_press:
+                root.manager.current="main"
+        Button:
+            text: "cancel"
+            size_hint:.35,.1
+            pos_hint:{"center_x":.5,"center_y":.2}
+            background_color:230/255,0,92/255
+            on_press:
+                root.manager.current="menu"
+
+
+<ExamStatsGrid>
+    cols:3
+    size_hint:1,0.06
+
+    canvas:
+        Color:
+            rgba: 227/255, 54/255, 95/255,1
+        Rectangle:
+            size: self.size
+            pos:self.pos
+    BorderedLabel:
+        text:"0"
+        id:Label1
+    BorderedLabel:
+        id:Label2
+    BorderedLabel:
+        text:"40"
+        id:Label3
+
+
+<OptionLayout>
+    cols:2
+    size_hint_x:.93
+    pos_hint:{"x":.05}
+    OptionCheckbox:
+        id:checkbox1
+        on_active:self.parent.parent.checkbox_click(self.active,1)
+    OptionButton:
+        id:option_1
+        on_press:
+            self.parent.parent.checkbox_click(checkbox1.active,1)
+            checkbox1.active=not checkbox1.active
+    OptionCheckbox:
+        id:checkbox2
+        on_active:self.parent.parent.checkbox_click(self.active,2)
+    OptionButton:
+        id:option_2
+        on_press:
+            self.parent.parent.checkbox_click(checkbox2.active,2)
+            checkbox2.active=not checkbox2.active
+    OptionCheckbox:
+        id:checkbox3
+        on_active:self.parent.parent.checkbox_click(self.active,3)
+    OptionButton:
+        id:option_3
+        on_press:
+            self.parent.parent.checkbox_click(checkbox3.active,3)
+            checkbox3.active=not checkbox3.active
+    OptionCheckbox:
+        id:checkbox4
+        on_active:self.parent.parent.checkbox_click(self.active,4)
+    OptionButton:
+        id:option_4
+        on_press:
+            self.parent.parent.checkbox_click(checkbox4.active,4)
+            checkbox4.active=not checkbox4.active
+
+
+
+
+<QuestionsLayout>
+    canvas:
+        Color:
+            rgb: 1,1,1
+        Rectangle:
+            size: self.size
+            pos:self.pos
+        Color:
+            rgb: 0,0,0
+        Line:
+            width: 2
+            rectangle: self.x+dp(2), self.y, self.width-dp(3), self.height
+
+<QuestionNavigator>
+    canvas:
+        Color:
+            rgb: 1, 153 / 255, 51 / 255
+        Rectangle:
+            size: self.size
+            pos:self.pos
+        Color:
+            rgb: 0,0,0
+        Line:
+            width: 1.2
+            rectangle: self.x, self.y, self.width, self.height
+    do_scroll_x : True
+    do_scroll_y : False
+    bar_width : 5
+    size_hint : (1, None)
+    height : dp(40)
+
+
+
+<QuestionsScreen@Screen>
+    name:"main"
+    on_parent:
+        exam_layout.children[3].on_screen_change(self)
+        exam_layout.update_topic()
+    on_leave:
+        exam_layout.children[3].on_screen_change(self)
+    ExamScreenLayout:
+        id:exam_layout
+        RelativeLayout:
+            canvas:
+                Color:
+                    rgba: 116/255, 191/255, 17/255,1
+                Rectangle:
+                    size: self.size
+                Color:
+                    rgba: 0,0,0, 1
+                Line:
+                    width: 1.2
+                    rectangle: self.x, 0, self.width, self.height
+
+            size_hint:1,None
+            height:dp(50)
+            BorderedButton:
+                text:"Previous"
+                size_hint:0.15,0.8
+                pos_hint:{"x":.01,"center_y":.5}
+                on_press:
+                    self.parent.parent.children[3].shift_question(-1)
+            BorderedButton:
+                text:"Next"
+                size_hint:0.15,0.8
+                pos_hint:{"center_x":.35,"center_y":.5}
+                on_press:
+                    self.parent.parent.children[3].shift_question(1)
+            BorderedButton:
+                text:"Mark as review"
+                size_hint:0.15,0.8
+                pos_hint:{"center_x":.65,"center_y":.5}
+                on_press:
+                    self.parent.parent.children[3].mark_review()
+            BorderedButton:
+                text:"clear selection"
+                size_hint:0.15,0.8
+                pos_hint:{"right":.99,"center_y":.5}
+                on_press:
+                    self.parent.parent.children[3].clear_selection()
+        RelativeLayout:
+            size_hint:1,None
+            height:dp(50)
+            BorderedButton:
+                text:"Finish Attempt"
+                size_hint:0.2,0.8
+                pos_hint:{"x":.01,"center_y":.5}
+                on_press:
+                    root.manager.current="verifysubmit"
+            BorderedButton:
+                text:"cancel exam"
+                size_hint:0.2,0.8
+                pos_hint:{"right":.99,"center_y":.5}
+                on_release:
+                    Factory.PopupLayout(root).open()
+        Label:
+            text:""
+            size_hint:1,.08
+
+
+<SubmitVerificationScreen@Screen>
+    canvas.before:
+        Color:
+            rgb : (252/255, 240/255, 30/255)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    name:"verifysubmit"
+    on_parent:
+        self.children[0].children[3].on_screen_change(self)
+    RelativeLayout:
+        orientation:"vertical"
+        QuestionStatsLayout:
+            size_hint:.8,0.4
+            pos_hint:{"center_x":.5,"center_y":0.65}
+            canvas.before:
+                Color:
+                    rgb : (252/255, 152/255, 3/255)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+        Label:
+            size_hint:.8,0.05
+            color:(0,0,0,1)
+            pos_hint:{"center_x":.5,"center_y":0.4}
+            text:"Once submitted answers cannot be edited"
+        Button:
+            text:"Submit"
+            size_hint:.5,0.1
+            pos_hint:{"center_x":.5,"center_y":0.3}
+            background_color: 1,.3,.4,1
+            on_press:
+                self.parent.children[3].end_exam()
+                root.manager.current="result"
+        Button:
+            text:"Back"
+            size_hint:.5,0.1
+            background_color: 1,.3,.4,1
+            pos_hint:{"center_x":.5,"center_y":0.2}
+            on_press:
+                root.manager.current="main"
+
+
+
+<ResultScreen@Screen>
+    name:"result"
+    on_parent:
+        self.children[0].children[1].on_screen_change(self)
+    RelativeLayout:
+        orientation:"vertical"
+        ResultLayout:
+            size_hint:.8,0.4
+            pos_hint:{"center_x":0.5,"center_y":.6}
+        Button:
+            text:"Menu"
+            size_hint:.4,0.1
+            pos_hint:{"center_x":0.5,"center_y":.3}
+            background_color: 1,.3,.4,1
+            on_press:
+                root.manager.current="menu"
+
+<SettingsScreen@Screen>
+    name:"settings"
+    Button:
+        text: "BACK"
+        size_hint:.30,.1
+        pos_hint:{"center_x":.5,"center_y":.5}
+        on_press:
+            root.manager.current="menu"
+
+
+

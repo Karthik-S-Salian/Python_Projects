@@ -1,0 +1,9 @@
+.idea
+venv
+test.py
+.ipynb_checkpoints
+.python_history
+.sambox.cache
+__pycache__
+datasets
+poppler-22.04.0
