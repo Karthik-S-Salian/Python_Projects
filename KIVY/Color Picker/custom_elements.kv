@@ -1,0 +1,80 @@
+<Alpha_scale_Slider@Slider>:
+    padding:0
+    cursor_image:'resources/images/icons8-i-50.png'
+    canvas.before:
+        Rectangle:
+            size:self.size
+            pos: self.pos
+            source: 'resources//images//alpha_scale.png'
+
+<H_scale_Slider@Slider>:
+    padding:0
+    cursor_image:'resources/images/icons8-i-50.png'
+    canvas.before:
+        Rectangle:
+            size:self.size
+            pos: self.pos
+            source: 'resources\images\h_scale.png'
+
+
+<ColorView>:
+    size_hint:None,None
+    width:dp(35)
+    height:self.width
+    background_normal:""
+    canvas:
+        Color:
+            rgba: 1,1,1, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+    on_press:
+        self.on_selection(self.color)
+
+
+<CustomTextInput@TextInput>
+    background_color:0,0,0,0
+    multiline: False
+    font_size:dp(15)
+    halign:"center"
+    cursor_color:1,1,1,1
+    cursor_blink:False
+    foreground_color:1,1,1
+#    font_name: 'resources\\fonts\\AlongSanss2-Medium.otf'
+    canvas.after:
+        Color:
+            rgba: 1,1,1, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+
+
+<CopyButton@Button>
+    size_hint:None,None
+    width:dp(20)
+    height:dp(30)
+    background_normal:'resources\\images\\resized-copy.png'
+    canvas:
+        Color:
+            rgba: 1,1,1, 1
+        Line:
+            width: 1
+            rectangle: self.x, self.y, self.width, self.height
+
+
+
+<Color_data_container>:
+    size_hint: (1,None)
+    height: dp(40)
+    canvas.before:
+        Color:
+            rgb:self.bg_color 
+        Rectangle:
+            size:self.size
+            pos:0,0
+        Color:
+            rgba: 1,1,1, 1
+        Line:
+            width: 1
+            rectangle: 0,0, self.width, self.height
+        

@@ -216,9 +216,7 @@ WindowManager
             active: True
         Slider:
             id: my_slider
-            min: 0
-            max: 100
-            value: 55
+
             on_value: root.on_slider_value(self)
             orientation: "horizontal"
             disabled: not my_switch.active

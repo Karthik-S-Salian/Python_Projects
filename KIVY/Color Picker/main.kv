@@ -1,4 +1,183 @@
-MainAppLayout
+#:import Clipboard kivy.core.clipboard.Clipboard
+#:import Clock kivy.clock.Clock
 
-
-
+MainAppLayout:
+    #pos_hint: {"x":0,"center_y":.5}
+    RelativeLayout:
+        size_hint:.6,1
+        DynamicImage:
+            size_hint:.9,0.5
+            pos_hint:{"center_x":.5,"center_y":.73}
+            padding:dp(10)
+            id:color_map
+            on_pos:
+                root.update_pointer_pos()
+            canvas:
+                Color:
+                    rgb: 1,1,1
+                Line:
+                    circle:(*root.pointer_pos,dp(6))
+                    width: 1.2
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+        RelativeLayout:
+            size_hint:1,.2
+            pos_hint:{"center_x":.5,"center_y":.38}
+            padding:dp(10)
+            RelativeLayout:
+                size_hint:.8,1
+                H_scale_Slider:
+                    id:h_scale_slider
+                    min:0
+                    max:360
+                    size_hint:.9,.35
+                    pos_hint:{"center_x":.5,"center_y":.75}
+                    on_value: root.on_h_slider_update(self.value)
+                Alpha_scale_Slider:
+                    size_hint:.9,.35
+                    pos_hint:{"center_x":.5,"center_y":.25}
+                    id:alpha_scale_slider
+                    min:0
+                    max:100
+                    value:100
+                    on_value: root.on_alpha_slider_update(self.value)
+            Widget:
+                size_hint:None,0.85
+                width:self.height
+                pos_hint:{"center_x":.88,"center_y":.5}
+                canvas.before:
+                    Color:
+                        rgb:0,0,0
+                    Rectangle:
+                        size:self.size
+                        pos:self.pos
+                canvas:
+                    Color:
+                        rgba:root.color
+                    Rectangle:
+                        size:self.size
+                        pos:self.pos
+                    Color:
+                        rgba: 1,1,1, 1
+                    Line:
+                        width: 1.1
+                        rectangle: self.x, self.y, self.width, self.height
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba:14/255 , 15/255 , 53/255 , 1
+                Rectangle:
+                    size:self.size 
+                    pos:self.pos
+                Color:
+                    rgba: 1,1,1, 1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+            orientation:"vertical"
+            pos_hint:{"x":.01,"y":0.01}
+            size_hint:.96,0.25
+            RelativeLayout:
+                size_hint:.9,1
+                pos_hint:{'center_x':0.5,'center_y':0.5}
+                Label:
+                    size_hint:.2,1
+                    pos_hint:{"center_x":.1,"center_y":.5}
+                    font_name: 'resources\\fonts\\AlongSanss2-Bold.otf'
+                    text: "rgba"
+                CustomTextInput:
+                    size_hint:.5,.65
+                    pos_hint:{"center_x":.5,"center_y":.5}
+                    on_text_validate: root.on_text_input_validate(self.text,'rgba')
+                    id:rgba_label
+                    on_focus: Clock.schedule_once(lambda dt: self.select_all(),0.25) if self.focus else root.on_text_input_validate(self.text,'rgba')
+                CopyButton:
+                    pos_hint:{"center_x":.9,"center_y":.5}
+                    on_release:
+                        Clipboard.copy(rgba_label.text)
+                        root.update_recents()
+            BoxLayout:
+                RelativeLayout:
+                    Label:
+                        size_hint:.2,.8
+                        pos_hint:{"center_x":.1,"center_y":.5}
+                        text: "hex"
+                        font_name: 'resources\\fonts\\AlongSanss2-Bold.otf'
+                    CustomTextInput:
+                        size_hint:.56,.65
+                        pos_hint:{"center_x":.5,"center_y":.5}
+                        on_text_validate: root.on_text_input_validate(self.text,'hex')
+                        id:hex_label
+                        on_focus: Clock.schedule_once(lambda dt: self.select_all(),0.25) if self.focus else root.on_text_input_validate(self.text,'hex')
+                    CopyButton:
+                        pos_hint:{"center_x":.9,"center_y":.5}
+                        on_release:
+                            Clipboard.copy(f"[{hex_label.text}]")
+                            root.update_recents()
+                RelativeLayout:
+                    Label:
+                        size_hint:.1,1
+                        pos_hint:{"center_x":.1,"center_y":.5}
+                        text: "hsv"
+                        font_name: 'resources\\fonts\\AlongSanss2-Bold.otf'
+                    CustomTextInput:
+                        size_hint:.59,.65
+                        pos_hint:{"center_x":.5,"center_y":.5}
+                        on_text_validate: root.on_text_input_validate(self.text,'hsv')
+                        id:hsv_label
+                        on_focus: Clock.schedule_once(lambda dt: self.select_all(),0.25) if self.focus else root.on_text_input_validate(self.text,'hsv')
+                    CopyButton:
+                        pos_hint:{"center_x":.9,"center_y":.5}
+                        on_release:
+                            Clipboard.copy(f"[{hsv_label.text}]")
+                            root.update_recents()
+                     
+    RelativeLayout:
+        size_hint:0.4,1
+        #pos_hint: {"x":0.6,"center_y":.5}
+        orientation:"vertical"
+        Label:
+            pos_hint:{"x":.01,"top":.98}
+            size_hint:.1,.05
+            text:"recent"
+        StackLayout:
+            pos_hint:{"x":.02,"top":.92}
+            size_hint:.94,.26
+            canvas.before:
+                Color:
+                    rgb:15/255 , 18/255 , 22/255
+                Rectangle:
+                    size:self.size
+                    pos:self.pos
+                Color:
+                    rgba: 1,1,1, 1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+            orientation:  "lr-tb"
+            padding: ("10dp","10dp","10dp","10dp")
+            spacing: "15dp","15dp"  
+            id:recent_color_container
+        Label:
+            pos_hint:{"x":.01,"y":.57}
+            size_hint:.4,.05
+            text:"Standard Colors"
+        ScrollView:
+            scroll_type:['bars', 'content']
+            pos_hint:{"x":.01,"top":.56}
+            size_hint:.98,.555
+            do_scroll_x : False
+            do_scroll_y : True
+            bar_width : dp(5)
+            canvas:
+                Color:
+                    rgb: 1,1,1
+                Line:
+                    width: 1.4
+                    rectangle: self.x, self.y, self.width, self.height
+            BoxLayout:
+                size_hint : (1, None)
+                height : self.minimum_height
+                orientation:"vertical"
+                id:color_list_container

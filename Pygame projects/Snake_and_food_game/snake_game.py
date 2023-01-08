@@ -21,7 +21,7 @@ class GAME_OVER(Exception):
 
 class Apple:
     def __init__(self, parent_screen):
-        self.apple_img = load("resource/images/food.png").convert()
+        self.apple_img = load("resource/images/food.png").convert_alpha()
         self.parent_screen = parent_screen
         self.appleX = size * randint(2, 13)
         self.appleY = size * randint(3, 13)
@@ -32,6 +32,7 @@ class Apple:
     def move(self):
         self.appleX = size * randint(1, 14)
         self.appleY = size * randint(3, 13)
+        return self.appleX,self.appleY
 
 
 class Snake:
@@ -124,7 +125,14 @@ class Game:
         if self.collision(self.snake.x[0], self.snake.y[0], self.apple.appleX, self.apple.appleY):
             mixer.Sound.play(self.ding_wav)
             self.snake.add_body()
-            self.apple.move()
+            apple_x,apple_y=self.apple.move()
+            while True:
+                for x,y in zip(self.snake.x,self.snake.y):
+                    if x==apple_x and y==apple_y:
+                        break
+                else:
+                    break
+                apple_x,apple_y=self.apple.move()
 
         if self.snake_collision():
             mixer.Sound.play(self.crash_wav)
@@ -137,11 +145,11 @@ class Game:
 
     def game_over(self):
         mixer.music.pause()
-        over_font = SysFont('arial', 50)
+        over_font = SysFont('arial', 30)
         over = over_font.render("GAME OVER", True, (255, 255, 255))
         restart = over_font.render("TO RESTART PRESS ENTER", True, (255, 255, 255))
-        self.surface.blit(over, (200, 200))
-        self.surface.blit(restart, (25, 300))
+        self.surface.blit(over, (210, 200))
+        self.surface.blit(restart, (100, 300))
         self.display_score()
         display.update()
 

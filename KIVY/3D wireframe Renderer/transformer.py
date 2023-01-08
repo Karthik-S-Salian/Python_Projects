@@ -1,5 +1,4 @@
 from math import sin, cos, radians
-import numpy as np
 
 
 def rotateX(vertex_list, degree, center=None):

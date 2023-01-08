@@ -1,0 +1,99 @@
+#: import Clock kivy.properties.Clock
+
+MainLayout
+
+<MainLayout>:
+    orientation:"vertical"
+    BoxLayout:
+        size_hint:1,None
+        height:dp(40)
+        padding:dp(2)
+        spacing:dp(2)
+        Button:
+            text:"NEW"
+            size_hint:.1,1
+            on_press:
+                root.on_new_prompt()
+        Label:
+            text:str(round(root.crr_color[0]*255))+" , "+str(round(root.crr_color[1]*255))+" , "+str(round(root.crr_color[2]*255)) + (f"   {root.color_name}" if root.color_name is not None else "")
+            color: (0,0,0) if sum(root.crr_color)>1.5 else (1,1,1)
+            canvas.before:
+                Color:
+                    rgb:root.crr_color
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                Color:
+                    rgb: 1,1,1
+                Line:
+                    width: 1
+                    rectangle: self.x, self.y, self.width, self.height
+        Button:
+            size_hint:None,1
+            width:self.height
+            background_normal: r"D://Users\Dell\Documents\PythonProjects\KIVY\Color Detector\src\exo_ic_fullscreen_enter.png"
+            on_press: 
+                keep_ratio=root.change_image_ratio()
+                self.background_normal = r"D://Users\Dell\Documents\PythonProjects\KIVY\Color Detector\src\exo_ic_fullscreen_enter.png" if keep_ratio else r"D://Users\Dell\Documents\PythonProjects\KIVY\Color Detector\src\exo_ic_fullscreen_exit.png"
+    CustomImage:
+        id:cimage
+        keep_data:True
+        keep_ratio:True
+        allow_stretch:True
+        source: r"D://Users\Dell\Documents\PythonProjects\KIVY\Color Detector\src\ultra-instinct-goku-dragon-ball-super-5k-5760x3240-5127.jpg"#"F://Users//Dell//Pictures\minecraft.jpg"
+        canvas:
+            Color:
+                rgb: (0,0,0) if sum(root.crr_color)>1.5 else (1,1,1)
+            Line:
+                circle:(*cimage.floatpos,dp(6))
+                width: 1.2
+            Color:
+                rgb: 1,1,1
+            Line:
+                width: 1
+                rectangle: self.x, self.y, self.width, self.height
+
+
+
+<LoadDialog>:
+    RelativeLayout:
+        BoxLayout:
+            orientation:"vertical"
+            size_hint:.7,.15
+            pos_hint:{"center_x":.5,"center_y":.65}
+            Label:
+                text_size:self.size
+                halign:"left"
+                valign:"middle"
+                text:"From Local Storage"
+            BoxLayout:
+                TextInput:
+                    size_hint:.7,1
+                    text:""
+                    on_focus: Clock.schedule_once(lambda dt: self.select_all(),0.25) if self.focus else None
+                Button:
+                    size_hint:.2,1
+                    text:"Browse"
+                    on_press:root.load_file()
+        BoxLayout:
+            orientation:"vertical"
+            size_hint:.7,.15
+            pos_hint:{"center_x":.5,"center_y":.35}
+            Label:
+                text_size:self.size
+                halign:"left"
+                valign:"middle"
+                text:"From Web"
+            BoxLayout:
+                
+                TextInput:
+                    size_hint:.7,1
+                    text:"Paste URL here"
+                    id:url_input
+                    multiline:False
+                    on_focus: Clock.schedule_once(lambda dt: self.select_all(),0.25) if self.focus else None
+                Button:
+                    size_hint:.2,1
+                    text:"load"
+                    on_press: root.load_url(url_input.text)
+
